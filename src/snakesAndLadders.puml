@@ -7,11 +7,12 @@ class Main {
 - {static} PLAYER_NAMES : String[]
 - {static} SNAKES_FROM_TO : int[][]
 - {static} LADDERS_FROM_TO : int[][]
+- {static} DEATH_SQUARES : int[]
 - {static} main(String[] args)
 }
 
 class Game {
-    + Game(playerNames: String[], numSquares : int, \n\t    snakes : int[][], ladders : int[][])
+    + Game(playerNames: String[], numSquares : int, \n\t    snakes : int[][], ladders : int[][], deathSquares: int[])
     + play()
     - makeBoard(numSquares : int, \n\t\t  snakes : int[][], ladders : int[][])
     - makePlayers(names : String[])
@@ -24,13 +25,13 @@ class Game {
 
 class Board {
     - {static} MIN_NUM_SQUARES : int
-    + Board(numSquares : int, snakes : int[][], ladders : int[][])
+    + Board(numSquares : int, snakes : int[][], ladders : int[][], deathSquares: int[])
     + firstSquare() : Square
     + lastSquare() : Square
     + findSquare() : Square
     + numberOfSquares() : int
-    - makeSnakes(snakes : int[][])
-    - makeLadders(ladders : int[][])
+    - makeSnakeOrLadders(toFrom: int[][]): void
+    - makeDeaths(deathSquares: int[]): void
 }
 
 class Die {
@@ -55,11 +56,15 @@ class Square {
 
 class Player {
 - name : String
+- dead : boolean
 + moveForward(moves : int)
 + getPosition() : int
 + wins() : boolean
++ isDead() : boolean
++ setDead() : void
 }
 
+/'
 class Snake extends Square {
     - transport : int
     # landHereOrGoHome() : Square
@@ -70,6 +75,16 @@ class Ladder extends Square {
     - transport : int
     # landHereOrGoHome() : Square
     - destination() : Square
+}'/
+
+class SnakeOrLadder extends Square{
+    - transport : int
+    # landHereOrGoHome() : Square
+    - destination() : Square
+}
+
+class Death extends Square{
+    # enter(p : Player): void
 }
 
 class FirstSquare extends Square {
@@ -92,4 +107,5 @@ Game x-down-> "0,1" Player : winner
 Square -left-> "0,1" Player : player
 Player -right-> "1" Square : square
 FirstSquare -left-> "*" Player : players
+Death -left-> "1..  " Player : players
 @enduml

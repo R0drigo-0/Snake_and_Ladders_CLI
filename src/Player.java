@@ -1,17 +1,26 @@
 public class Player {
   private String name;
   private Square square = null;
+  private boolean dead = false;
+
+  public boolean isDead() {
+    return dead;
+  }
+
+  public void setDead(boolean d) {
+    this.dead = d;
+  }
 
   public Player(String name) {
     this.name = name;
   }
 
   public void setSquare(Square square) {
-	  this.square = square;
+    this.square = square;
   }
 
   public String getName() {
-	  return name;
+    return name;
   }
 
   public int getPosition() {
